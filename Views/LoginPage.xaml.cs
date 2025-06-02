@@ -22,10 +22,8 @@ public partial class LoginPage : ContentPage
 
         try
         {
-            // Simple check
             if (username == "test-user" && password == "Appservices@123")
             {
-                // Don't save login state - just navigate directly
                 Application.Current.MainPage = new AppShell();
             }
             else

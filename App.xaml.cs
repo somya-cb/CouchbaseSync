@@ -13,29 +13,24 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        Console.WriteLine("=== APP CONSTRUCTOR CALLED ===");
 
 #if IOS
-        Console.WriteLine("=== iOS: INITIALIZING DATABASE ===");
         InitializeDatabase();
 #endif
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        Console.WriteLine("=== CREATE WINDOW CALLED ===");
-        
-        // Always show login page - no persistence
-        Console.WriteLine("=== SHOWING LOGIN PAGE ===");
+        // Always show login page on app launch
         return new Window(new Views.LoginPage());
     }
 
     protected override async void OnStart()
     {
         base.OnStart();
-        Console.WriteLine("=== APP ONSTART CALLED ===");
 
 #if ANDROID
+        // Android needs slight delay for context to be ready
         await Task.Delay(100);
         if (!_databaseInitialized)
         {
@@ -48,28 +43,19 @@ public partial class App : Application
     {
         try
         {
-            Console.WriteLine("=== INITIALIZE DATABASE CALLED ===");
-
             var config = new DatabaseConfiguration();
-            Console.WriteLine($"=== DATABASE PATH: {config.Directory} ===");
-
             SharedDb = new Database("appsync-db", config);
-            Console.WriteLine("=== DATABASE CREATED ===");
 
             _couchbaseService = CouchbaseService.Instance;
             _couchbaseService.Initialize(SharedDb);
-            Console.WriteLine("=== COUCHBASE SERVICE INITIALIZED ===");
 
             _syncService = new SyncService(SharedDb);
-            Console.WriteLine("=== SYNC SERVICE CREATED ===");
 
             _databaseInitialized = true;
-            Console.WriteLine("=== DATABASE AND SERVICES INITIALIZED SUCCESSFULLY ===");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"=== DATABASE INIT FAILED: {ex.Message} ===");
-            Console.WriteLine($"=== STACK TRACE: {ex.StackTrace} ===");
+            Console.WriteLine($"Database initialization failed: {ex.Message}");
         }
     }
 

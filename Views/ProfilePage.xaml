@@ -6,10 +6,10 @@
              Title="Employee Profiles"
              BackgroundColor="#F5F5F5">
 
-<ContentPage.ToolbarItems>
-    <ToolbarItem Text="Logout" 
-                 Clicked="OnLogoutClicked" />
-</ContentPage.ToolbarItems>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Logout" 
+                     Clicked="OnLogoutClicked" />
+    </ContentPage.ToolbarItems>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -123,7 +123,6 @@
                                    Grid.Column="1" 
                                    Text="{Binding Title}" 
                                    FontSize="14" 
-                                   FontAttributes="Italic" 
                                    TextColor="#666" 
                                    VerticalOptions="Center" />
 

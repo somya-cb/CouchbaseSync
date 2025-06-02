@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Android",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/AppSync.csproj",
+            "targetFramework": "net8.0-android"
+        },
+        {
+            "name": "iOS Simulator",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/AppSync.csproj",
+            "targetFramework": "net8.0-ios"
+        }
+    ]
+}

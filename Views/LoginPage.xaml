@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppSync.Views.LoginPage"
+             Title="Login"
+             BackgroundColor="#2E86AB">
+
+    <ScrollView>
+        <StackLayout Padding="40" 
+                     VerticalOptions="CenterAndExpand" 
+                     Spacing="20">
+
+            <!-- App Title -->
+            <Label Text="AppSync" 
+                   FontSize="32" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   HorizontalOptions="Center" 
+                   Margin="0,0,0,40" />
+
+            <!-- Login Form -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="30" 
+                   HasShadow="True">
+                
+                <StackLayout Spacing="15">
+                    <Label Text="Login" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           TextColor="#333" 
+                           HorizontalOptions="Center" />
+
+                    <Entry x:Name="UsernameEntry" 
+                           Placeholder="Username" 
+                           FontSize="16"
+                           Keyboard="Plain"
+                           TextTransform="None" />
+
+                    <Entry x:Name="PasswordEntry" 
+                           Placeholder="Password" 
+                           IsPassword="True" 
+                           FontSize="16"
+                           Keyboard="Plain"
+                           TextTransform="None" />
+
+                    <Button Text="Login" 
+                            BackgroundColor="#2E86AB" 
+                            TextColor="White" 
+                            FontSize="16" 
+                            CornerRadius="8" 
+                            Clicked="OnLoginClicked" />
+
+                    <ActivityIndicator x:Name="LoadingIndicator" 
+                                       IsVisible="False" 
+                                       Color="#2E86AB" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

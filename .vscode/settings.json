@@ -1,0 +1,6 @@
+{
+    "dotnet.defaultSolution": "AppSync.sln",
+    "omnisharp.projectLoadTimeout": 120,
+    "omnisharp.enableRoslynAnalyzers": true,
+    "dotnet.android.jdkPath": "/opt/homebrew/Cellar/openjdk@17/17.0.15/libexec/openjdk.jdk/Contents/Home"
+}

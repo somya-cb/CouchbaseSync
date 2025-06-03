@@ -53,8 +53,8 @@ The project follows the typical structure of a **.NET MAUI** application, with t
    - Create collection: `profiles`
 
 2. **App Services Configuration:**
-   - Create an App Services endpoint
-   - Create a user (test-user) for the endpoint
+   - Create an App Services endpoint (e.g., test-endpoint)
+   - Create a user for the endpoint (e.g., test-user)
    - In Access & Validation, use wildcard `!` to allow all access
    - Update the sync gateway URL in `SyncService.cs` with your endpoint
 
@@ -63,9 +63,71 @@ The project follows the typical structure of a **.NET MAUI** application, with t
    - For testing: Can allow access from everywhere
    - ⚠️ **Not recommended for production** - use specific IP ranges
 
+4. **Import Sample Data :**
+   - Use the included `Dataset.json` to populate your Capella bucket with sample employee data
+
 ### App Configuration
 
 **Login Credentials:** Use the same credentials as your App Services user
+
+## 🚀 Running the App
+
+### Prerequisites
+- .NET 8 SDK
+- iOS Simulator (for iOS testing)
+- Android Emulator (for Android testing)
+
+### Steps to Run
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/somya-cb/CouchbaseSync.git
+cd CouchbaseSync
+```
+
+2. **Clean and restore dependencies:**
+```bash
+dotnet clean
+dotnet restore
+```
+
+3. **Run on iOS:**
+```bash
+dotnet build -f net8.0-ios -t:Run
+```
+
+4. **Run on Android:**
+```bash
+# First ensure Android emulator is running
+emulator -avd YOUR_EMULATOR_NAME &
+# Verify emulator is connected
+adb devices
+# Build and run
+dotnet build -f net8.0-android -t:Run
+```
+
+## 🧪 Testing the App
+
+1. **Login** with your App Services credentials
+2. **View employee profiles** (synced from Capella)
+3. **Test real-time bidirectional sync:**
+   - Edit an employee profile on device → Check Capella for instant sync
+   - Delete an employee on device → Verify removal in Capella
+   - Edit/delete a record in Capella → See real-time updates in app
+   - Use refresh button to manually sync if needed
+4. **Test CRUD operations:**
+   - Create, Read, Update, Delete employee profiles
+   - Confirm deletion dialogs work properly
+5. **Test session management:**
+   - Logout and login again to verify authentication flow
+
+## 🛠️ Troubleshooting
+
+- **Sync fails:** Verify your App Services endpoint URL in `SyncService.cs`
+- **Connection issues:** Ensure network access is configured in Capella
+- **App won't start:** Check that emulator/simulator has internet connectivity
+- **Build errors:** Run `dotnet clean` and `dotnet restore` before building
+
 ## 📱 Screenshots
 
 ### iOS

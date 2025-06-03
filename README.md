@@ -41,7 +41,31 @@ The project follows the typical structure of a **.NET MAUI** application, with t
 - **`AppSync.sln`**: The solution file that contains the project and solution structure.
 - **`MauiProgram.cs`**: The file where services and dependencies are configured for the app.
 - **`Dataset.json`**: This is the dataset you can import onto Capella.
+  
+## 🔧 Setup & Configuration
 
+### Couchbase Capella Setup
+
+1. **Create Cluster & Bucket:**
+   - Set up a Couchbase Capella cluster
+   - Create bucket: `users`
+   - Create scope: `employees` 
+   - Create collection: `profiles`
+
+2. **App Services Configuration:**
+   - Create an App Services endpoint
+   - Create a user (test-user) for the endpoint
+   - In Access & Validation, use wildcard `!` to allow all access
+   - Update the sync gateway URL in `SyncService.cs` with your endpoint
+
+3. **Network Access:**
+   - Allow IP address access in Capella (blocks all by default)
+   - For testing: Can allow access from everywhere
+   - ⚠️ **Not recommended for production** - use specific IP ranges
+
+### App Configuration
+
+**Login Credentials:** Use the same credentials as your App Services user
 ## 📱 Screenshots
 
 ### iOS

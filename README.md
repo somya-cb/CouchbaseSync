@@ -1,6 +1,26 @@
-# AppSync - .NET MAUI Project
+# AppSync - .NET MAUI Employee Directory
 
-This project is a **.NET MAUI** mobile application that demonstrates **Couchbase Lite** synchronization with **Couchbase Capella**. It allows users to view and manage employee profiles, with bidirectional synchronization to the backend.
+This project is a **.NET MAUI** mobile application that demonstrates **Couchbase Lite** synchronization with **Couchbase Capella**. It allows users to view and manage employee profiles with real-time bidirectional synchronization to the backend.
+
+## ✅ Platform Support & Testing
+
+**This app is fully functional and has been tested on:**
+
+- **iOS**: iOS 18.4/18.5 (iPhone/iPad simulators)
+- **Android**: Android API 35 (Pixel emulators)
+
+**Development Environment:**
+- macOS with .NET 8
+- iOS Simulator 
+- Android Emulator
+
+## 🚀 Features
+
+- **Full CRUD Operations**: Create, Read, Update, Delete employee profiles
+- **Real-time Sync**: Bidirectional synchronization with Couchbase Capella
+- **Cross-platform UI**: Clean, professional interface for both iOS and Android
+- **Session Authentication**: Login required on each app launch
+- **Employee Management**: View, edit, and delete employee records
 
 ## Directory Structure
 
@@ -17,14 +37,15 @@ The project follows the typical structure of a **.NET MAUI** application, with t
 
 - **`App.xaml`**: The entry point for the application, where application-wide resources are defined.
 - **`App.xaml.cs`**: Handles the initialization of shared services like the `CouchbaseService` and `SyncService`.
-- **`AppShell.xaml`**: Defines the navigation structure of the app (e.g., tabs, flyout menu).
 - **`AppSync.csproj`**: The project file that contains references and settings for the .NET MAUI application.
 - **`AppSync.sln`**: The solution file that contains the project and solution structure.
 - **`MauiProgram.cs`**: The file where services and dependencies are configured for the app.
--  **`Dataset.json`**: This is the dataset you can import onto Capella.
+- **`Dataset.json`**: This is the dataset you can import onto Capella.
 
-<h3>Login Page</h3>
-<img src="https://github.com/somya-cb/CouchbaseSync/blob/main/Login%20Page.png" alt="Login Page" width="400" height="500">
+## 📱 Screenshots
 
-<h3>Profile Page</h3>
-<img src="https://github.com/somya-cb/CouchbaseSync/blob/main/Profile%20Page.png" alt="Profile Page" width="400" height="500">
+### iOS
+<img src="https://github.com/somya-cb/CouchbaseSync/blob/main/screenshots/ios%20-%20Login.png" alt="iOS Login Page" width="400" height="600"> &nbsp;&nbsp;&nbsp;&nbsp; <img src="https://github.com/somya-cb/CouchbaseSync/blob/main/screenshots/ios-%20Profiles.png" alt="iOS Profile Page" width="400" height="600">
+
+### Android
+<img src="https://github.com/somya-cb/CouchbaseSync/blob/main/screenshots/android%20-%20Login.png" alt="Android Login Page" width="250" height="500"> &nbsp;&nbsp;&nbsp;&nbsp; <img src="https://github.com/somya-cb/CouchbaseSync/blob/main/screenshots/android%20-%20Profiles.png" alt="Android Profile Page" width="250" height="500">

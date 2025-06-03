@@ -1,39 +1,17 @@
-using AppSync.Models;
-using AppSync.Services;
-using System.Collections.ObjectModel;
-using Couchbase.Lite.Sync;
-using Couchbase.Lite;
-
 namespace AppSync.Views;
 
 public partial class ProfilePage : ContentPage
 {
-    public ObservableCollection<Profile> Profiles { get; set; } = new();
-    public Command<Profile> EditCommand { get; }
-    public Command<Profile> DeleteCommand { get; }
-    private bool _isLoadingProfiles = false;
+    private List<AppSync.Models.Profile> _allProfiles = new();
 
     public ProfilePage()
     {
-        try
-        {
-            InitializeComponent();
-            BindingContext = this;
-
-            EditCommand = new Command<Profile>(EditProfile);
-            DeleteCommand = new Command<Profile>(DeleteProfile);
-
-            LoadProfiles();
-            SetupRealTimeSyncListener();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"ProfilePage initialization error: {ex.Message}");
-            throw;
-        }
+        InitializeComponent();
+        SetupSyncListener();
+        LoadProfiles();
     }
 
-    private void SetupRealTimeSyncListener()
+    private void SetupSyncListener()
     {
         try
         {
@@ -45,129 +23,220 @@ public partial class ProfilePage : ContentPage
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error setting up sync listener: {ex.Message}");
+            StatusLabel.Text = $"Sync setup error: {ex.Message}";
         }
     }
 
-    private void OnDocumentSyncChanged(object? sender, DocumentReplicationEventArgs e)
+    private void OnDocumentSyncChanged(object? sender, Couchbase.Lite.Sync.DocumentReplicationEventArgs e)
     {
-        // Refresh UI only for incoming changes from server
         if (!e.IsPush && e.Documents.Count > 0)
         {
             MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                try
-                {
-                    // Brief delay to ensure database consistency
-                    await Task.Delay(200);
-                    
-                    if (!_isLoadingProfiles)
-                    {
-                        LoadProfiles();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error in sync listener: {ex.Message}");
-                }
+                await Task.Delay(200);
+                LoadProfiles();
             });
         }
     }
 
     private async void LoadProfiles()
     {
-        if (_isLoadingProfiles) return;
-        
         try
         {
-            _isLoadingProfiles = true;
+            StatusLabel.Text = "Loading profiles...";
+            
             var couchbaseService = App.GetCouchbaseService();
             if (couchbaseService != null)
             {
-                var docs = await Task.Run(() => couchbaseService.GetAllProfiles());
+                _allProfiles = await Task.Run(() => couchbaseService.GetAllProfiles());
                 
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Profiles.Clear();
-                    foreach (var doc in docs)
-                    {
-                        Profiles.Add(doc);
-                    }
-                    
+                    StatusLabel.Text = $"Found {_allProfiles.Count} profiles";
+                    DisplayProfiles();
                 });
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading profiles: {ex.Message}");
-        }
-        finally
-        {
-            _isLoadingProfiles = false;
-        }
-    }
-
-    private async void EditProfile(Profile profile)
-    {
-        try
-        {
-            var editPage = new EditProfilePage(profile);
-            await Navigation.PushAsync(editPage);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error navigating to edit: {ex.Message}");
-            await DisplayAlert("Error", "Failed to open edit page", "OK");
-        }
-    }
-
-    private async void DeleteProfile(Profile profile)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(profile.Id))
+            else
             {
-                await DisplayAlert("Error", $"Cannot delete {profile.Name}: Profile has no ID", "OK");
-                return;
+                StatusLabel.Text = "Database not ready";
             }
+        }
+        catch (Exception ex)
+        {
+            StatusLabel.Text = $"Error: {ex.Message}";
+        }
+    }
 
-            var confirm = await DisplayAlert("Delete", $"Delete {profile.Name} (ID: {profile.Id})?", "Yes", "No");
-            if (confirm)
+    private void DisplayProfiles()
+    {
+        ProfilesContainer.Children.Clear();
+        
+        foreach (var profile in _allProfiles)
+        {
+            var profileFrame = new Frame
+            {
+                BackgroundColor = Colors.White,
+                Padding = 8,
+                Margin = new Thickness(0, 2),
+                CornerRadius = 5,
+                HasShadow = false
+            };
+
+            var mainGrid = new Grid
+            {
+                ColumnDefinitions = 
+                {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = GridLength.Auto }
+                },
+                RowDefinitions = 
+                {
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto }
+                }
+            };
+
+            // Profile info (left side)
+            var nameLabel = new Label 
+            { 
+                Text = $"{profile.Name} ({profile.Id})", 
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 14
+            };
+            
+            var titleLabel = new Label 
+            { 
+                Text = profile.Title, 
+                FontSize = 12,
+                TextColor = Colors.Gray
+            };
+            
+            var emailLabel = new Label 
+            { 
+                Text = profile.Email, 
+                FontSize = 11,
+                TextColor = Colors.DarkGray
+            };
+
+            Grid.SetColumn(nameLabel, 0);
+            Grid.SetRow(nameLabel, 0);
+            
+            Grid.SetColumn(titleLabel, 0);
+            Grid.SetRow(titleLabel, 1);
+            
+            Grid.SetColumn(emailLabel, 0);
+            Grid.SetRow(emailLabel, 2);
+
+            // Buttons (right side)
+            var buttonsStack = new StackLayout 
+            { 
+                Orientation = StackOrientation.Horizontal,
+                Spacing = 5,
+                VerticalOptions = LayoutOptions.Center
+            };
+
+            // Edit button
+            var editFrame = new Frame
+            {
+                BackgroundColor = Colors.Orange,
+                Padding = new Thickness(8, 4),
+                CornerRadius = 3,
+                HasShadow = false
+            };
+            
+            editFrame.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() => EditProfile(profile))
+            });
+            
+            editFrame.Content = new Label 
+            { 
+                Text = "Edit", 
+                TextColor = Colors.White, 
+                FontSize = 10,
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            // Delete button
+            var deleteFrame = new Frame
+            {
+                BackgroundColor = Colors.Red,
+                Padding = new Thickness(8, 4),
+                CornerRadius = 3,
+                HasShadow = false
+            };
+            
+            deleteFrame.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(async () => await DeleteProfileWithConfirmation(profile))
+            });
+            
+            deleteFrame.Content = new Label 
+            { 
+                Text = "Delete", 
+                TextColor = Colors.White, 
+                FontSize = 10,
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            buttonsStack.Children.Add(editFrame);
+            buttonsStack.Children.Add(deleteFrame);
+
+            Grid.SetColumn(buttonsStack, 1);
+            Grid.SetRow(buttonsStack, 0);
+            Grid.SetRowSpan(buttonsStack, 3);
+
+            mainGrid.Children.Add(nameLabel);
+            mainGrid.Children.Add(titleLabel);
+            mainGrid.Children.Add(emailLabel);
+            mainGrid.Children.Add(buttonsStack);
+            
+            profileFrame.Content = mainGrid;
+            ProfilesContainer.Children.Add(profileFrame);
+        }
+    }
+
+    private void EditProfile(AppSync.Models.Profile profile)
+    {
+        Application.Current.MainPage = new Views.EditPage(profile);
+    }
+
+    private async Task DeleteProfileWithConfirmation(AppSync.Models.Profile profile)
+    {
+        try
+        {
+            bool confirmed = await DisplayAlert(
+                "Delete Profile", 
+                $"Are you sure you want to delete {profile.Name}?", 
+                "Yes", 
+                "No"
+            );
+
+            if (confirmed)
             {
                 var couchbaseService = App.GetCouchbaseService();
                 if (couchbaseService != null)
                 {
                     await Task.Run(() => couchbaseService.DeleteProfile(profile.Id));
-                    Profiles.Remove(profile);
-                }
-                else
-                {
-                    await DisplayAlert("Error", "Database service not available", "OK");
+                    LoadProfiles();
+                    StatusLabel.Text = $"Deleted {profile.Name}";
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error deleting profile {profile.Id}: {ex.Message}");
-            await DisplayAlert("Error", $"Failed to delete {profile.Name}", "OK");
+            StatusLabel.Text = $"Delete error: {ex.Message}";
         }
     }
 
-    protected override void OnAppearing()
+    private void OnRefreshTapped(object sender, EventArgs e)
     {
-        base.OnAppearing();
         LoadProfiles();
-        
     }
 
-    private async void OnLogoutClicked(object sender, EventArgs e)
+    private void OnLogoutTapped(object sender, EventArgs e)
     {
-        var confirm = await DisplayAlert("Logout", "Are you sure?", "Yes", "No");
-        if (confirm)
-        {
-            Microsoft.Maui.Storage.Preferences.Remove("IsLoggedIn");
-            Microsoft.Maui.Storage.Preferences.Remove("Username");
-            Application.Current.MainPage = new Views.LoginPage();
-        }
+        Application.Current.MainPage = new Views.LoginPage();
     }
 }

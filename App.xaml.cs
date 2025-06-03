@@ -19,12 +19,11 @@ public partial class App : Application
 #endif
     }
 
-    protected override Window CreateWindow(IActivationState? activationState)
-    {
-        // Always show login page on app launch
-        return new Window(new Views.LoginPage());
-    }
-
+protected override Window CreateWindow(IActivationState? activationState)
+{
+    // Use simple pages for both platforms now
+    return new Window(new Views.LoginPage());
+}
     protected override async void OnStart()
     {
         base.OnStart();

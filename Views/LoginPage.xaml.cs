@@ -7,37 +7,25 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnLoginClicked(object sender, EventArgs e)
+    private async void OnLoginTapped(object sender, EventArgs e)
     {
         var username = UsernameEntry.Text?.Trim();
         var password = PasswordEntry.Text?.Trim();
 
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            await DisplayAlert("Error", "Please enter username and password", "OK");
+            ((Label)((Frame)sender).Content).Text = "Enter credentials";
             return;
         }
 
-        LoadingIndicator.IsVisible = true;
-
-        try
+        if (username == "test-user" && password == "Appservices@123")
         {
-            if (username == "test-user" && password == "Appservices@123")
-            {
-                Application.Current.MainPage = new AppShell();
-            }
-            else
-            {
-                await DisplayAlert("Error", "Invalid credentials", "OK");
-            }
+            // Navigate to ProfilePage (not TestPage!)
+            Application.Current.MainPage = new Views.ProfilePage();
         }
-        catch (Exception ex)
+        else
         {
-            await DisplayAlert("Error", "Login failed", "OK");
-        }
-        finally
-        {
-            LoadingIndicator.IsVisible = false;
+            ((Label)((Frame)sender).Content).Text = "Invalid login";
         }
     }
 }

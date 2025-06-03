@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppSync.Views.EditPage"
+             Title="Edit Profile">
+
+    <StackLayout Padding="20" Spacing="15">
+        <Label Text="Edit Employee Profile" FontSize="20" HorizontalOptions="Center" />
+        
+        <Label Text="Employee ID:" />
+        <Label x:Name="IdLabel" FontAttributes="Bold" />
+        
+        <Label Text="Name:" />
+        <Entry x:Name="NameEntry" />
+        
+        <Label Text="Title:" />
+        <Entry x:Name="TitleEntry" />
+        
+        <Label Text="Email:" />
+        <Entry x:Name="EmailEntry" />
+        
+        <!-- Save Button -->
+        <Frame BackgroundColor="Green" Padding="10" HorizontalOptions="Center">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnSaveTapped" />
+            </Frame.GestureRecognizers>
+            <Label Text="Save Changes" TextColor="White" HorizontalOptions="Center" />
+        </Frame>
+        
+        <!-- Cancel Button -->
+        <Frame BackgroundColor="Gray" Padding="10" HorizontalOptions="Center">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCancelTapped" />
+            </Frame.GestureRecognizers>
+            <Label Text="Cancel" TextColor="White" HorizontalOptions="Center" />
+        </Frame>
+        
+        <Label x:Name="StatusLabel" Text="" HorizontalOptions="Center" />
+    </StackLayout>
+
+</ContentPage>

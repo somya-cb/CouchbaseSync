@@ -44,12 +44,21 @@
                            Keyboard="Plain"
                            TextTransform="None" />
 
-                    <Button Text="Login" 
-                            BackgroundColor="#2E86AB" 
-                            TextColor="White" 
-                            FontSize="16" 
-                            CornerRadius="8" 
-                            Clicked="OnLoginClicked" />
+                    <!-- Login Button Frame (works on both platforms) -->
+                    <Frame BackgroundColor="#2E86AB" 
+                           Padding="12" 
+                           CornerRadius="8"
+                           HasShadow="False"
+                           HorizontalOptions="FillAndExpand">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLoginTapped" />
+                        </Frame.GestureRecognizers>
+                        <Label Text="Login" 
+                               TextColor="White" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+                    </Frame>
 
                     <ActivityIndicator x:Name="LoadingIndicator" 
                                        IsVisible="False" 

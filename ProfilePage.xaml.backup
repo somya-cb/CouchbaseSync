@@ -30,6 +30,9 @@
                            FontSize="20" 
                            FontAttributes="Bold" 
                            TextColor="White" />
+                   <Label Text="Loading..." 
+       FontSize="14" 
+       TextColor="#B8E6FF" />
                 </StackLayout>
                 <Frame BackgroundColor="White" 
                        CornerRadius="20" 

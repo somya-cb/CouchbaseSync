@@ -94,6 +94,11 @@ public partial class ProfilePage : ContentPage
                         Profiles.Add(doc);
                     }
                     
+                    // // Update employee count display
+                    // if (FindByName("CountLabel") is Label countLabel)
+                    // {
+                    //     countLabel.Text = $"{Profiles.Count} employees";
+                    // }
                 });
             }
         }
@@ -158,6 +163,13 @@ public partial class ProfilePage : ContentPage
         base.OnAppearing();
         LoadProfiles();
         
+        // MainThread.BeginInvokeOnMainThread(() =>
+        // {
+        //     if (FindByName("CountLabel") is Label countLabel)
+        //     {
+        //         countLabel.Text = $"{Profiles.Count} employees";
+        //     }
+        // });
     }
 
     private async void OnLogoutClicked(object sender, EventArgs e)

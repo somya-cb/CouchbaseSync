@@ -22,3 +22,9 @@ The project follows the typical structure of a **.NET MAUI** application, with t
 - **`AppSync.sln`**: The solution file that contains the project and solution structure.
 - **`MauiProgram.cs`**: The file where services and dependencies are configured for the app.
 -  **`Dataset.json`**: This is the dataset you can import onto Capella.
+
+<h3>Login Page</h3>
+<img src="https://github.com/somya-cb/CouchbaseSync/blob/main/Login%20Page.png" alt="Login Page" width="400" height="500">
+
+<h3>Profile Page</h3>
+<img src="https://github.com/somya-cb/CouchbaseSync/blob/main/Profile%20Page.png" alt="Profile Page" width="400" height="500">

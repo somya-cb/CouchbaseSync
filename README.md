@@ -9,11 +9,6 @@ This project is a **.NET MAUI** mobile application that demonstrates **Couchbase
 - **iOS**: iOS 18.4/18.5 (iPhone/iPad simulators)
 - **Android**: Android API 35 (Pixel emulators)
 
-**Development Environment:**
-- macOS with .NET 8
-- iOS Simulator 
-- Android Emulator
-
 ## 🚀 Features
 
 - **Full CRUD Operations**: Create, Read, Update, Delete employee profiles
@@ -73,6 +68,26 @@ The project follows the typical structure of a **.NET MAUI** application, with t
 ## 🚀 Running the App
 
 ### Prerequisites
+
+### .NET Workload Installation (Required)
+Before building or running the project, make sure you have the necessary .NET workloads installed:
+
+```bash
+dotnet workload install maui
+dotnet workload install android
+dotnet workload install ios
+dotnet workload update
+```
+
+#### VS Code Extensions (Optional - for development)
+If you plan to use this app as a base for building similar applications, install these VS Code extensions:
+
+- **.NET MAUI** - Tools for building .NET MAUI apps  
+- **C# Dev Kit** - Official C# extension with IntelliSense and debugging
+- **C#** - Base language support for C#
+
+### Development Environment Requirements
+
 - .NET 8 SDK
 - iOS Simulator (for iOS testing)
 - Android Emulator (for Android testing)

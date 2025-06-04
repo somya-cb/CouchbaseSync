@@ -1,4 +1,4 @@
-# AppSync - .NET MAUI Employee Directory
+# AppSync - .NET MAUI App
 
 This project is a **.NET MAUI** mobile application that demonstrates **Couchbase Lite** synchronization with **Couchbase Capella**. It allows users to view and manage employee profiles with real-time bidirectional synchronization to the backend.
 

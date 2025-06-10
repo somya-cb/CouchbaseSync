@@ -16,6 +16,7 @@ This project is a **.NET MAUI** mobile application that demonstrates **Couchbase
 - **Cross-platform UI**: Clean, professional interface for both iOS and Android
 - **Session Authentication**: Login required on each app launch
 - **Employee Management**: View, edit, and delete employee records
+- **Conflict Resolution:** Uses Couchbase Lite's default "Last Write Wins" (revision-based). Custom conflict resolvers can be implemented in `SyncService.cs` if needed.
 
 ## Directory Structure
 

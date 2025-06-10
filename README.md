@@ -13,6 +13,7 @@ This project is a **.NET MAUI** mobile application that demonstrates **Couchbase
 
 - **Full CRUD Operations**: Create, Read, Update, Delete employee profiles
 - **Real-time Sync**: Bidirectional synchronization with Couchbase Capella
+- **Offline-First**: App works fully offline, syncs when connectivity restored
 - **Cross-platform UI**: Clean, professional interface for both iOS and Android
 - **Session Authentication**: Login required on each app launch
 - **Employee Management**: View, edit, and delete employee records
@@ -136,6 +137,12 @@ dotnet build -f net8.0-android -t:Run
    - Confirm deletion dialogs work properly
 5. **Test session management:**
    - Logout and login again to verify authentication flow
+6. **Test offline-first functionality:**
+   - Turn off device internet/WiFi
+   - Edit/delete employee profiles while offline
+   - Turn internet back on
+   - Verify offline changes sync to Capella automatically
+   - Test conflict resolution with simultaneous offline/online edits
 
 ## 🛠️ Troubleshooting
 

@@ -88,9 +88,9 @@ If you plan to use this app as a base for building similar applications, install
 - **C# Dev Kit** - Official C# extension with IntelliSense and debugging
 - **C#** - Base language support for C#
 
-### Development Environment Requirements
-
-- .NET 8 SDK
+#### Development Environment Requirements
+- .NET 8 SDK (.NET 8 target framework)
+- Couchbase Lite 3.2.3 (included in project dependencies)
 - iOS Simulator (for iOS testing)
 - Android Emulator (for Android testing)
 

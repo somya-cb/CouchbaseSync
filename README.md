@@ -89,10 +89,11 @@ If you plan to use this app as a base for building similar applications, install
 - **C#** - Base language support for C#
 
 #### Development Environment Requirements
-- .NET 8 SDK (.NET 8 target framework)
-- Couchbase Lite 3.2.3 (included in project dependencies)
+- .NET 9 SDK (.NET 9 target framework)
+- Couchbase Lite 4.0.2 (included in project dependencies)
 - iOS Simulator (for iOS testing)
 - Android Emulator (for Android testing)
+
 
 ### Steps to Run
 
@@ -110,7 +111,7 @@ dotnet restore
 
 3. **Run on iOS:**
 ```bash
-dotnet build -f net8.0-ios -t:Run
+dotnet build -f net9.0-ios -t:Run
 ```
 
 4. **Run on Android:**
@@ -120,7 +121,7 @@ emulator -avd YOUR_EMULATOR_NAME &
 # Verify emulator is connected
 adb devices
 # Build and run
-dotnet build -f net8.0-android -t:Run
+dotnet build -f net9.0-android -t:Run
 ```
 
 ## 🧪 Testing the App

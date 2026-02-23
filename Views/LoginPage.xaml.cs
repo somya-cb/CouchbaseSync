@@ -20,7 +20,7 @@ public partial class LoginPage : ContentPage
 
         if (username == "test-user" && password == "Appservices@123")
         {
-            // Navigate to ProfilePage (not TestPage!)
+            await App.StartSync(username, password);
             Application.Current.MainPage = new Views.ProfilePage();
         }
         else

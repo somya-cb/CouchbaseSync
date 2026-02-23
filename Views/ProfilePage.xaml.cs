@@ -3,6 +3,7 @@ namespace AppSync.Views;
 public partial class ProfilePage : ContentPage
 {
     private List<AppSync.Models.Profile> _allProfiles = new();
+    private Couchbase.Lite.ListenerToken? _syncListenerToken;
 
     public ProfilePage()
     {
@@ -18,12 +19,22 @@ public partial class ProfilePage : ContentPage
             var syncService = App.GetSyncService();
             if (syncService != null)
             {
-                syncService.Replicator.AddDocumentReplicationListener(OnDocumentSyncChanged);
+                _syncListenerToken = syncService.Replicator.AddDocumentReplicationListener(OnDocumentSyncChanged);
             }
         }
         catch (Exception ex)
         {
             StatusLabel.Text = $"Sync setup error: {ex.Message}";
+        }
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        if (_syncListenerToken.HasValue)
+        {
+            App.GetSyncService()?.Replicator.RemoveChangeListener(_syncListenerToken.Value);
+            _syncListenerToken = null;
         }
     }
 
@@ -235,8 +246,9 @@ public partial class ProfilePage : ContentPage
         LoadProfiles();
     }
 
-    private void OnLogoutTapped(object sender, EventArgs e)
+    private async void OnLogoutTapped(object sender, EventArgs e)
     {
+        await App.StopSync();
         Application.Current.MainPage = new Views.LoginPage();
     }
 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- Fixed: Remove duplicate line -->
-    <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <RootNamespace>AppSync</RootNamespace>
     <UseMaui>true</UseMaui>
@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <!-- Android-specific -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
     <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
     <AndroidTargetSdkVersion>35</AndroidTargetSdkVersion>
   </PropertyGroup>
@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <!-- iOS-specific - Removed specific RuntimeIdentifier to let it choose available simulator -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0-ios'">
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
@@ -58,12 +58,12 @@
 
   <ItemGroup>
     <!-- Couchbase support -->
-    <PackageReference Include="Couchbase.Lite" Version="3.2.3" />
-    <PackageReference Include="Couchbase.Lite.Support.Android" Version="3.2.3" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'" />
-    <PackageReference Include="Couchbase.Lite.Support.iOS" Version="3.2.3" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'" />
+    <PackageReference Include="Couchbase.Lite" Version="4.0.2" />
+    <PackageReference Include="Couchbase.Lite.Support.Android" Version="4.0.2" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'" />
+    <PackageReference Include="Couchbase.Lite.Support.iOS" Version="4.0.2" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'" />
 
     <!-- Core MAUI packages -->
-    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
   </ItemGroup>
 

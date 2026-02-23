@@ -48,8 +48,6 @@ protected override Window CreateWindow(IActivationState? activationState)
             _couchbaseService = CouchbaseService.Instance;
             _couchbaseService.Initialize(SharedDb);
 
-            _syncService = new SyncService(SharedDb);
-
             _databaseInitialized = true;
         }
         catch (Exception ex)
@@ -66,15 +64,34 @@ protected override Window CreateWindow(IActivationState? activationState)
         }
     }
 
+    public static async Task StartSync(string username, string password)
+    {
+        EnsureDatabaseInitialized();
+        if (SharedDb == null) return;
+
+        if (_syncService != null)
+        {
+            await _syncService.StopAsync();
+            _syncService = null;
+        }
+
+        _syncService = new SyncService(SharedDb, username, password);
+    }
+
+    public static async Task StopSync()
+    {
+        if (_syncService != null)
+        {
+            await _syncService.StopAsync();
+            _syncService = null;
+        }
+    }
+
     public static CouchbaseService? GetCouchbaseService()
     {
         EnsureDatabaseInitialized();
         return _couchbaseService;
     }
 
-    public static SyncService? GetSyncService()
-    {
-        EnsureDatabaseInitialized();
-        return _syncService;
-    }
+    public static SyncService? GetSyncService() => _syncService;
 }

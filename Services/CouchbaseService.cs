@@ -96,13 +96,14 @@ namespace AppSync.Services
         {
             if (string.IsNullOrEmpty(profile.Id)) return;
 
-            var doc = new MutableDocument(profile.Id);
-            
+            var existing = _profileCollection.GetDocument(profile.Id);
+            var doc = existing?.ToMutable() ?? new MutableDocument(profile.Id);
+
             doc.SetString("email", profile.Email);
             doc.SetString("id", profile.Id);
             doc.SetString("name", profile.Name);
             doc.SetString("title", profile.Title);
-            
+
             _profileCollection.Save(doc);
         }
     }

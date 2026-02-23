@@ -24,30 +24,56 @@ public partial class EditPage : ContentPage
         try
         {
             StatusLabel.Text = "Saving...";
-            
-            // Update profile with new values
+
             var updatedProfile = new AppSync.Models.Profile
             {
-                Id = _profile.Id, // Keep the same ID
+                Id = _profile.Id,
                 Name = NameEntry.Text?.Trim() ?? "",
                 Title = TitleEntry.Text?.Trim() ?? "",
                 Email = EmailEntry.Text?.Trim() ?? ""
             };
 
             var couchbaseService = App.GetCouchbaseService();
-            if (couchbaseService != null)
+            var syncService = App.GetSyncService();
+
+            if (couchbaseService == null)
             {
-                await Task.Run(() => couchbaseService.SaveProfile(updatedProfile));
-                StatusLabel.Text = "Saved successfully!";
-                
-                // Wait a moment then go back
-                await Task.Delay(1000);
-                Application.Current.MainPage = new Views.ProfilePage();
+                StatusLabel.Text = "Database service not available";
+                return;
+            }
+
+            await Task.Run(() => couchbaseService.SaveProfile(updatedProfile));
+            StatusLabel.Text = "Saved locally, syncing to Capella...";
+
+            if (syncService != null)
+            {
+                var tcs = new TaskCompletionSource<string>();
+                EventHandler<AppSync.Services.DocumentPushResultEventArgs>? handler = null;
+                handler = (s, args) =>
+                {
+                    if (args.DocumentId == updatedProfile.Id)
+                    {
+                        tcs.TrySetResult(args.Success
+                            ? "Synced to Capella!"
+                            : $"Sync failed: {args.Error?.Message}");
+                    }
+                };
+
+                syncService.DocumentPushCompleted += handler;
+                var completed = await Task.WhenAny(tcs.Task, Task.Delay(5000));
+                syncService.DocumentPushCompleted -= handler;
+
+                StatusLabel.Text = completed == tcs.Task
+                    ? tcs.Task.Result
+                    : "Saved locally (sync pending...)";
             }
             else
             {
-                StatusLabel.Text = "Database service not available";
+                StatusLabel.Text = "Saved locally!";
             }
+
+            await Task.Delay(1500);
+            Application.Current.MainPage = new Views.ProfilePage();
         }
         catch (Exception ex)
         {
